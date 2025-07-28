@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "925stackai"
 version = "0.1.0"
-description = "9251"
-authors = ["Your Name <gerryvarone95@emailgmail.com>"]
+description = "Foundational backend for 925 Stack AI"
+authors = ["925 Team <dev@925stack.ai>"]
 
 packages = [
   { include = "backend" }

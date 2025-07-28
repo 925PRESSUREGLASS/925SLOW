@@ -2,11 +2,8 @@
 
 import json
 import sys
-from pathlib import Path
 
 import click
-
-from backend.api.root import healthcheck  # quick sanity check
 
 
 @click.command()
@@ -22,4 +19,3 @@ def main(prompt_: str):  # noqa: D401,ANN001 \u2013 Click callback
 
 if __name__ == "__main__":
     sys.exit(main())
-

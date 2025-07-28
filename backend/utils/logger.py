@@ -12,4 +12,3 @@ def log(event: str, **payload):  # noqa: D401,ANN001 – generic helper
         **payload,
     }
     sys.stdout.write(json.dumps(record) + "\n")
-

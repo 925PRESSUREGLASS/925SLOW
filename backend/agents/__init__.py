@@ -79,4 +79,3 @@ class QuoteAgent(BaseAgent):
             result["quote_id"] = obj.id
 
         return result
-

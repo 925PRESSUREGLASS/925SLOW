@@ -19,7 +19,7 @@ class SpecResult:
 def grade(response_md: str) -> SpecResult:  # noqa: D401,ANN001
     """Return a compliance score (0‑1) and violation list for **specs/quote_generation.md**."""
 
-    lines = [l.rstrip() for l in response_md.strip().splitlines() if l.strip()]
+    lines = [line.rstrip() for line in response_md.strip().splitlines() if line.strip()]
     if not lines:
         return SpecResult(0.0, ["empty response"])
 
