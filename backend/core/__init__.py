@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-import yaml
+import yaml  # type: ignore
 
 CONFIG_PATH = Path(__file__).parent.parent.parent / "config.yaml"
 

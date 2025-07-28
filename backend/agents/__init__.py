@@ -1,6 +1,6 @@
 """Agent namespace \u2013 concrete agents will be added incrementally."""
 
-__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent"]
+__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent", "MemoryAgent"]
 
 # NOTE: public re-export kept above in patch.
 
@@ -40,12 +40,32 @@ class QuoteAgent(BaseAgent):
         total = qty * 10.0
         year = datetime.now(timezone.utc).year
 
-        quote_line = f"> ${total:,.2f} for cleaning {qty} windows in {suburb}"
-        attribution = f"> 44 QuoteGPT, {year}"
-        rationale = (
-            "Rationale: placeholder $10/window rate while "
-            "pricing engine is pending."  # noqa: E501
+        # -------- Memory injection ----------------------------------------
+
+        from backend.agents.memory_agent import MemoryAgent
+
+        memory_hits = MemoryAgent().run(prompt, top_k=3)
+        # use items with score < 1.0 (distance metric)
+        relevant_snippets = [
+            m["snippet"] for m in memory_hits if m["score"] < 1.0
+        ]  # noqa: E501
+
+        from backend.core.llm_provider import chat as call_llm
+        from backend.core.prompt_manager import build_quote_prompt
+
+        llm_prompt = build_quote_prompt(
+            (
+                f"Provide one-sentence rationale for charging ${total:.2f} "
+                f"to clean {qty} windows in {suburb}"
+            ),
+            context_items=relevant_snippets,
         )
+
+        llm_rationale = call_llm(llm_prompt)
+
+        quote_line = f"> ${total:,.2f} for cleaning {qty} windows in {suburb}"
+        attribution = f"> — QuoteGPT, {year}"
+        rationale = f"Rationale: {llm_rationale}"
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
 
@@ -64,6 +84,7 @@ class QuoteAgent(BaseAgent):
                 "score": spec_result.score,
                 "violations": spec_result.violations,
             },
+            "vector_used": bool(relevant_snippets),
         }
 
         # -------- Persistence ----------------------------------------------
@@ -86,3 +107,4 @@ class QuoteAgent(BaseAgent):
 
 
 from .customer_agent import CustomerAgent  # noqa: E402
+from .memory_agent import MemoryAgent  # noqa: E402
