@@ -50,7 +50,7 @@ class QuoteAgent(BaseAgent):
 
         spec_result = grade(full_quote)
 
-        return {
+        result = {
             "quote_text": full_quote,
             "rationale": rationale,
             "suburb": suburb,
@@ -61,4 +61,22 @@ class QuoteAgent(BaseAgent):
                 "violations": spec_result.violations,
             },
         }
+
+        # -------- Persistence ----------------------------------------------
+
+        from backend.database import Quote, get_session  # local import to avoid heavy dep on start-up
+
+        with get_session() as sess:
+            obj = Quote(
+                prompt=prompt,
+                quote_text=full_quote,
+                rationale=rationale,
+                suburb=suburb,
+                total=total,
+            )
+            sess.add(obj)
+            sess.commit()
+            result["quote_id"] = obj.id
+
+        return result
 
