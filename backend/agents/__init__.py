@@ -42,7 +42,7 @@ class QuoteAgent(BaseAgent):
 
 
         attribution = f"> — QuoteGPT, {year}"
-        rationale = f"Rationale: {llm_rationale}"
+        rationale = "Rationale: This is a placeholder rationale for the quote."
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
 
