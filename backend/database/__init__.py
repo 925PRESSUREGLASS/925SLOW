@@ -6,7 +6,6 @@ import os
 from pathlib import Path
 from uuid import uuid4
 
-from slugify import slugify
 from sqlalchemy import DateTime, Float, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from datetime import datetime, timezone
@@ -29,6 +28,7 @@ class Base(DeclarativeBase):
 # Models – only Quote for now.  Customer & Job will come in later PRs.
 # ---------------------------------------------------------------------------
 
+
 class Quote(Base):
     __tablename__ = "quotes"
 
@@ -47,6 +47,7 @@ class Quote(Base):
 
 def get_session() -> Session:  # noqa: D401,ANN001 – convenience factory
     return Session(engine, autoflush=False, expire_on_commit=False)
+
 
 # Create tables at import time (simple for SQLite dev flow)
 Base.metadata.create_all(engine)
