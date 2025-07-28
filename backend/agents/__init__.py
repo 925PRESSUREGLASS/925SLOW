@@ -38,32 +38,9 @@ class QuoteAgent(BaseAgent):
             qty, suburb = 1, "Unknown"
 
         total = qty * 10.0
-        year = datetime.now(timezone.utc).year
+        year = datetime.utcnow().year
 
-        # -------- Memory injection ----------------------------------------
 
-        from backend.agents.memory_agent import MemoryAgent
-
-        memory_hits = MemoryAgent().run(prompt, top_k=3)
-        # use items with score < 1.0 (distance metric)
-        relevant_snippets = [
-            m["snippet"] for m in memory_hits if m["score"] < 1.0
-        ]  # noqa: E501
-
-        from backend.core.llm_provider import chat as call_llm
-        from backend.core.prompt_manager import build_quote_prompt
-
-        llm_prompt = build_quote_prompt(
-            (
-                f"Provide one-sentence rationale for charging ${total:.2f} "
-                f"to clean {qty} windows in {suburb}"
-            ),
-            context_items=relevant_snippets,
-        )
-
-        llm_rationale = call_llm(llm_prompt)
-
-        quote_line = f"> ${total:,.2f} for cleaning {qty} windows in {suburb}"
         attribution = f"> — QuoteGPT, {year}"
         rationale = f"Rationale: {llm_rationale}"
 
