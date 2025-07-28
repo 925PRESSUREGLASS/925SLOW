@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Minimal Stripe helper – safe to import without real API keys.
 
 In **CI / dev** it falls back to a deterministic stub so tests don’t reach the network.

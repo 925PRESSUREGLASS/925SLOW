@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 from fastapi import APIRouter
 
 from backend.agents.customer_agent import CustomerAgent

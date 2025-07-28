@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 
 """SQLite persistence layer (SQLAlchemy 2.0 ORM)."""

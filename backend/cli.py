@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """CLI entry\u2011point wrapping the Router/Agents for local usage."""
 
 import json

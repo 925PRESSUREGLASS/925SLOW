@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Central place to assemble prompts once LLM integration lands."""
 
 

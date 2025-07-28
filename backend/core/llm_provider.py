@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Unified LLM interface with **fallback order**: GPT-4 -> Ollama -> stub.
 
 * Reads provider + model from `config.yaml` (loaded by ``core.load_config``).

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 from fastapi.testclient import TestClient
 
 from backend import create_app

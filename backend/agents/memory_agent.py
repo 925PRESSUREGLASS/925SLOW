@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Simple memory lookup for past quotes via the database."""
 
 from __future__ import annotations

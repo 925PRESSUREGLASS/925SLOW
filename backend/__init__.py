@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Backend package root for 925\u00a0Stack\u00a0AI."""
 
 __all__ = [

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Extremely simple router – will grow as more agents arrive."""
 
 from backend.agents import QuoteAgent
