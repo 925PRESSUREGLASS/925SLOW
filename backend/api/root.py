@@ -1,15 +1,21 @@
 from fastapi import APIRouter
+
+from backend.agents.customer_agent import CustomerAgent
 from backend.agents.router_agent import RouterAgent
-from backend.database import Quote, get_session  # placed here to avoid circular import earlier
+from backend.database import (  # placed here to avoid circular import earlier
+    Quote, get_session)
 
 router = APIRouter()
+
 
 @router.get("/health", tags=["meta"])
 async def healthcheck() -> dict[str, str]:
     """Simple liveness probe used by CI and Docker compose."""
     return {"status": "ok"}
 
+
 # -------- Quote endpoint ---------------------------------------------------
+
 
 @router.post("/quote", tags=["quote"])
 async def generate_quote(request: dict[str, str]):  # noqa: ANN001 – minimal
@@ -17,7 +23,9 @@ async def generate_quote(request: dict[str, str]):  # noqa: ANN001 – minimal
     prompt: str = request.get("prompt", "")
     return RouterAgent.dispatch(prompt)
 
+
 # -------- Quote retrieval --------------------------------------------------
+
 
 @router.get("/quote/{quote_id}", tags=["quote"])
 async def fetch_quote(quote_id: str):
@@ -35,3 +43,16 @@ async def fetch_quote(quote_id: str):
             "total": obj.total,
             "created_at": obj.created_at.isoformat(),
         }
+
+
+# -------- Customer CRUD ----------------------------------------------------
+
+
+@router.post("/customer", tags=["customer"])
+async def upsert_customer(body: dict):  # noqa: ANN001
+    """Create or update a customer record.
+
+    Body must include at least `email`.
+    """
+
+    return CustomerAgent.run(body)

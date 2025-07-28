@@ -1,6 +1,6 @@
 """Agent namespace \u2013 concrete agents will be added incrementally."""
 
-__all__ = ["BaseAgent", "QuoteAgent"]
+__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent"]
 
 # NOTE: public re-export kept above in patch.
 
@@ -20,12 +20,17 @@ class QuoteAgent(BaseAgent):
     def run(self, prompt: str, **kwargs):
         """Produce a *format-compliant* placeholder quote.
 
-        Very naive parsing: look for "<number> windows in <Suburb>" and charge $10/ea.
+        Very naive parsing: look for "<number> windows in <Suburb>"
+        and charge $10/ea.
         """
         import re
         from datetime import datetime, timezone
 
-        match = re.search(r"(\d+)\s+windows?\s+in\s+([A-Za-z]+)", prompt, flags=re.I)
+        match = re.search(
+            r"(\d+)\s+windows?\s+in\s+([A-Za-z]+)",
+            prompt,
+            flags=re.I,
+        )
         if match:
             qty = int(match.group(1))
             suburb = match.group(2).title()
@@ -38,13 +43,15 @@ class QuoteAgent(BaseAgent):
         quote_line = f"> ${total:,.2f} for cleaning {qty} windows in {suburb}"
         attribution = f"> 44 QuoteGPT, {year}"
         rationale = (
-            "Rationale: placeholder $10/window rate while pricing engine is pending."
+            "Rationale: placeholder $10/window rate while "
+            "pricing engine is pending."  # noqa: E501
         )
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
 
         # -------- SpecGuard -------------------------------------------------
         from backend.core.spec_guard import grade
+
         spec_result = grade(full_quote)
 
         result = {
@@ -60,7 +67,9 @@ class QuoteAgent(BaseAgent):
         }
 
         # -------- Persistence ----------------------------------------------
-        from backend.database import Quote, get_session  # local import to avoid heavy dep on start-up
+        # local import to avoid heavy dep on start-up
+        from backend.database import Quote, get_session
+
         with get_session() as sess:
             obj = Quote(
                 prompt=prompt,
@@ -74,3 +83,6 @@ class QuoteAgent(BaseAgent):
             result["quote_id"] = obj.id
 
         return result
+
+
+from .customer_agent import CustomerAgent  # noqa: E402
