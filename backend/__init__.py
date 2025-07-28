@@ -15,4 +15,3 @@ def create_app() -> FastAPI:
     app = FastAPI(title="925\u00a0Stack\u00a0AI\u00a0API", version="0.1.0")
     app.include_router(router)
     return app
-
