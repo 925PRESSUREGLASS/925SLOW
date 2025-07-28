@@ -7,19 +7,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
-from sqlalchemy import DateTime, Float, ForeignKey, String, create_engine
-from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, relationship
-from sqlalchemy.types import Text
+
 
 # ---------------------------------------------------------------------------
 # Engine & Base
 # ---------------------------------------------------------------------------
 
 DATA_DIR = Path(
-    os.getenv(
-        "DATA_DIR",
-        Path(__file__).resolve().parent.parent.parent / "data",
-    )
+
 )
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -32,9 +27,6 @@ class Base(DeclarativeBase):
 
 
 # ---------------------------------------------------------------------------
-# Models – Quote and Customer for now. Job will come in later PRs.
-# ---------------------------------------------------------------------------
-
 
 class Quote(Base):
     __tablename__ = "quotes"
@@ -53,23 +45,10 @@ class Quote(Base):
 
 
 # ---------------------------------------------------------------------------
-# Customer model (basic)
-# ---------------------------------------------------------------------------
 
-
-class Customer(Base):
-    __tablename__ = "customers"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid4())
-    )
-    name: Mapped[str] = mapped_column(String, nullable=False)
-    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    phone: Mapped[str] = mapped_column(String, nullable=True)
-    suburb: Mapped[str] = mapped_column(String, nullable=True)
-    tags: Mapped[str] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
 
 
