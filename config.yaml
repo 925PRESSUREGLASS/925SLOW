@@ -1,0 +1,4 @@
+# Initial configuration – will expand.
+
+llm:
+  provider: "openai"  # or "ollama"
