@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from backend.agents.router_agent import RouterAgent
+from backend.agents.memory_agent import MemoryAgent
 
 
 router = APIRouter()
