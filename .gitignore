@@ -1,0 +1,19 @@
+# Byte‑code / venv / editor cruft
+__pycache__/
+.venv/
+.env
+.idea/
+.vscode/
+dist/
+build/
+
+# Python tooling
+.mypy_cache/
+.pytest_cache/
+
+# Node tooling (frontend later)
+node_modules/
+
+# Docker volumes
+chroma_data/
+ollama_models/
