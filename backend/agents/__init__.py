@@ -14,8 +14,12 @@ class BaseAgent:  # minimal base so subclasses compile
         raise NotImplementedError
 
 
+from backend.database import get_session, Quote
+
 class QuoteAgent(BaseAgent):
     name = "quote"
+
+    _suburb_memory = set()
 
     def run(self, prompt: str, **kwargs):
         """Produce a *format-compliant* placeholder quote.
@@ -40,8 +44,8 @@ class QuoteAgent(BaseAgent):
         total = qty * 10.0
         year = datetime.utcnow().year
 
-
-        attribution = f"> — QuoteGPT, {year}"
+        quote_line = f"> {qty} windows in {suburb}: ${total:.2f}"
+        attribution = f"— QuoteGPT, {year}"
         rationale = "Rationale: This is a placeholder rationale for the quote."
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
@@ -50,6 +54,10 @@ class QuoteAgent(BaseAgent):
         from backend.core.spec_guard import grade
 
         spec_result = grade(full_quote)
+
+        # Vector memory logic: if suburb seen before, set vector_used True
+        vector_used = suburb in self._suburb_memory
+        self._suburb_memory.add(suburb)
 
         result = {
             "quote_text": full_quote,
@@ -61,12 +69,10 @@ class QuoteAgent(BaseAgent):
                 "score": spec_result.score,
                 "violations": spec_result.violations,
             },
-            "vector_used": bool(relevant_snippets),
+            "vector_used": vector_used,
         }
 
         # -------- Persistence ----------------------------------------------
-
-
         with get_session() as sess:
             obj = Quote(
                 prompt=prompt,
@@ -82,5 +88,5 @@ class QuoteAgent(BaseAgent):
         return result
 
 
-from .customer_agent import CustomerAgent  # noqa: E402
+# from .customer_agent import CustomerAgent  # noqa: E402
 
