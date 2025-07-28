@@ -9,6 +9,7 @@ services:
     volumes:
       - ..:/app
       - ../config.yaml:/app/config.yaml:ro
+      - ../data:/app/data  # persist SQLite outside container
     environment:
       - PYTHONUNBUFFERED=1
 

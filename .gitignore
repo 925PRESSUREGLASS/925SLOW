@@ -17,3 +17,4 @@ node_modules/
 # Docker volumes
 chroma_data/
 ollama_models/
+data/
