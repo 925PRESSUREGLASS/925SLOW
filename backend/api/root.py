@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from backend.agents.customer_agent import CustomerAgent
+
 from backend.agents.router_agent import RouterAgent
 from backend.database import (  # placed here to avoid circular import earlier
     Quote, get_session)
@@ -24,6 +25,7 @@ async def generate_quote(request: dict[str, str]):  # noqa: ANN001 – minimal
     return RouterAgent.dispatch(prompt)
 
 
+
 # -------- Quote retrieval --------------------------------------------------
 
 
@@ -45,14 +47,3 @@ async def fetch_quote(quote_id: str):
         }
 
 
-# -------- Customer CRUD ----------------------------------------------------
-
-
-@router.post("/customer", tags=["customer"])
-async def upsert_customer(body: dict):  # noqa: ANN001
-    """Create or update a customer record.
-
-    Body must include at least `email`.
-    """
-
-    return CustomerAgent.run(body)

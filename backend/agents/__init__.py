@@ -1,6 +1,6 @@
 """Agent namespace \u2013 concrete agents will be added incrementally."""
 
-__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent", "MemoryAgent"]
+
 
 # NOTE: public re-export kept above in patch.
 
@@ -65,8 +65,7 @@ class QuoteAgent(BaseAgent):
         }
 
         # -------- Persistence ----------------------------------------------
-        # local import to avoid heavy dep on start-up
-        from backend.database import Quote, get_session
+
 
         with get_session() as sess:
             obj = Quote(
