@@ -1,6 +1,6 @@
 """Agent namespace \u2013 concrete agents will be added incrementally."""
 
-__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent"]
+__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent", "MemoryAgent"]
 
 # NOTE: public re-export kept above in patch.
 
@@ -40,14 +40,7 @@ class QuoteAgent(BaseAgent):
         total = qty * 10.0
         year = datetime.utcnow().year
 
-        # Query LLM for a short rationale so we exercise provider logic
-        from backend.core.llm_provider import chat as call_llm
 
-        llm_rationale = call_llm(
-            f"Give one-sentence explanation for a ${total:.2f} window-cleaning quote."
-        )
-
-        quote_line = f"> \${total:,.2f} for cleaning {qty} windows in {suburb}"
         attribution = f"> — QuoteGPT, {year}"
         rationale = f"Rationale: {llm_rationale}"
 
@@ -68,6 +61,7 @@ class QuoteAgent(BaseAgent):
                 "score": spec_result.score,
                 "violations": spec_result.violations,
             },
+            "vector_used": bool(relevant_snippets),
         }
 
         # -------- Persistence ----------------------------------------------
@@ -90,3 +84,4 @@ class QuoteAgent(BaseAgent):
 
 
 from .customer_agent import CustomerAgent  # noqa: E402
+from .memory_agent import MemoryAgent  # noqa: E402
