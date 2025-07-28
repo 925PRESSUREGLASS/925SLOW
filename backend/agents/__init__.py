@@ -38,14 +38,11 @@ class QuoteAgent(BaseAgent):
             qty, suburb = 1, "Unknown"
 
         total = qty * 10.0
-        year = datetime.now(timezone.utc).year
+        year = datetime.utcnow().year
 
-        quote_line = f"> ${total:,.2f} for cleaning {qty} windows in {suburb}"
-        attribution = f"> 44 QuoteGPT, {year}"
-        rationale = (
-            "Rationale: placeholder $10/window rate while "
-            "pricing engine is pending."  # noqa: E501
-        )
+
+        attribution = f"> — QuoteGPT, {year}"
+        rationale = f"Rationale: {llm_rationale}"
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
 
@@ -64,6 +61,7 @@ class QuoteAgent(BaseAgent):
                 "score": spec_result.score,
                 "violations": spec_result.violations,
             },
+            "vector_used": bool(relevant_snippets),
         }
 
         # -------- Persistence ----------------------------------------------
@@ -85,3 +83,4 @@ class QuoteAgent(BaseAgent):
 
 
 from .customer_agent import CustomerAgent  # noqa: E402
+from .memory_agent import MemoryAgent  # noqa: E402
