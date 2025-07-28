@@ -1,8 +1,12 @@
 [tool.poetry]
 name = "925stackai"
 version = "0.1.0"
-description = "Foundational backend for 925\u202FStack\u202FAI"
-authors = ["925\u00a0Team <dev@925stack.ai>"]
+description = "9251"
+authors = ["Your Name <gerryvarone95@emailgmail.com>"]
+
+packages = [
+  { include = "backend" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
