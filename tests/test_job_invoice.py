@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Ensure JobAgent auto-creates invoice id when marked completed."""
 
 import importlib

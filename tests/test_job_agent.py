@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 from backend.agents.customer_agent import CustomerAgent
 from backend.agents.job_agent import JobAgent
 from backend.agents.quote_agent import QuoteAgent

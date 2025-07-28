@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 
 
 from backend.database import Customer, Job, Quote, get_session

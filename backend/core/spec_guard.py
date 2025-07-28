@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Lightweight markdown rule checker for QuoteAgent outputs."""
 
 from __future__ import annotations

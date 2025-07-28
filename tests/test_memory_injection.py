@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Verify `vector_used=True` when a prior similar quote exists."""
 
 from backend.agents.quote_agent import QuoteAgent

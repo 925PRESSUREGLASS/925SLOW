@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Agent namespace \u2013 concrete agents will be added incrementally."""
 
 

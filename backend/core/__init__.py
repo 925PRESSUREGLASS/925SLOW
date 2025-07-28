@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Core utilities (LLM provider, prompt manager, SpecGuard stub)."""
 
 from pathlib import Path

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Centralised JSON logger (tiny – will be expanded with file/telemetry sinks)."""
 
 import json

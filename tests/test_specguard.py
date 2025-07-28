@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 from backend.core.spec_guard import grade
 
 
