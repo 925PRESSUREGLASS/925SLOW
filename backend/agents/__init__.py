@@ -1,6 +1,6 @@
 """Agent namespace \u2013 concrete agents will be added incrementally."""
 
-__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent"]
+__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent", "JobAgent"]
 
 # NOTE: public re-export kept above in patch.
 
@@ -90,3 +90,4 @@ class QuoteAgent(BaseAgent):
 
 
 from .customer_agent import CustomerAgent  # noqa: E402
+from .job_agent import JobAgent  # noqa: E402

@@ -8,3 +8,7 @@ llm:
   ollama:
     host: "http://localhost:11434"
     model: "mistral"
+
+stripe:
+  enabled: false          # set true in prod
+  currency: "aud"
