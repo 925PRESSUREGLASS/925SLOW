@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from backend.agents.router_agent import RouterAgent
+from backend.agents.memory_agent import MemoryAgent
 
 
 router = APIRouter()
@@ -47,4 +48,15 @@ async def fetch_quote(quote_id: str):
             "total": obj.total,
             "created_at": obj.created_at.isoformat(),
         }
+
+
+# -------- Memory search endpoint ------------------------------------------
+
+
+@router.post("/memory", tags=["memory"])
+async def memory_search(request: dict[str, str]):  # noqa: ANN001 – minimal
+    """Return top‑3 similar past quotes to the supplied `prompt`."""
+
+    prompt: str = request.get("prompt", "")
+    return MemoryAgent.run(prompt)
 
