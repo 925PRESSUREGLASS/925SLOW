@@ -1,6 +1,6 @@
 """Agent namespace \u2013 concrete agents will be added incrementally."""
 
-__all__ = ["BaseAgent", "QuoteAgent"]
+__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent", "JobAgent"]
 
 # NOTE: public re-export kept above in patch.
 
@@ -45,6 +45,7 @@ class QuoteAgent(BaseAgent):
 
         # -------- SpecGuard -------------------------------------------------
         from backend.core.spec_guard import grade
+
         spec_result = grade(full_quote)
 
         result = {
@@ -60,7 +61,9 @@ class QuoteAgent(BaseAgent):
         }
 
         # -------- Persistence ----------------------------------------------
-        from backend.database import Quote, get_session  # local import to avoid heavy dep on start-up
+        from backend.database import (  # local import to avoid heavy dep on start-up
+            Quote, get_session)
+
         with get_session() as sess:
             obj = Quote(
                 prompt=prompt,
@@ -74,3 +77,7 @@ class QuoteAgent(BaseAgent):
             result["quote_id"] = obj.id
 
         return result
+
+
+from .customer_agent import CustomerAgent  # noqa: E402
+from .job_agent import JobAgent  # noqa: E402
