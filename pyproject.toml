@@ -14,6 +14,7 @@ fastapi = "^0.110.2"
 uvicorn = {extras = ["standard"], version = "^0.29.0"}
 click = "^8.1.7"
 httpx = "^0.27.0"
+stripe = "8.0.0"
 SQLAlchemy = "^2.0.30"
 python-slugify = "^8.0.4"  # tiny helper for DB path default
 python-dateutil = "^2.9.0.post0"

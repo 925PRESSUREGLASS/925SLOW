@@ -53,6 +53,33 @@ class Quote(Base):
 
 
 # ---------------------------------------------------------------------------
+# Job model (links Quote and Customer)
+# ---------------------------------------------------------------------------
+
+
+class Job(Base):
+    __tablename__ = "jobs"
+
+    id: Mapped[str] = mapped_column(
+        String, primary_key=True, default=lambda: str(uuid4())
+    )
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"))
+    quote_id: Mapped[str] = mapped_column(ForeignKey("quotes.id"))
+    status: Mapped[str] = mapped_column(String, default="draft")
+    scheduled_date: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    notes: Mapped[str | None] = mapped_column(String, nullable=True)
+    invoice_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+    )
+
+    customer = relationship("Customer")
+    quote = relationship("Quote")
+
+
+# ---------------------------------------------------------------------------
 # Session helper
 # ---------------------------------------------------------------------------
 

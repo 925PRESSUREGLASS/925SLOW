@@ -2216,6 +2216,22 @@ anyio = ">=3.4.0,<5"
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.7)", "pyyaml"]
 
 [[package]]
+name = "stripe"
+version = "8.0.0"
+description = "Python bindings for the Stripe API"
+optional = false
+python-versions = ">=3.6"
+groups = ["main"]
+files = [
+    {file = "stripe-8.0.0-py2.py3-none-any.whl", hash = "sha256:0c6c7ded4ae98340107a9d61f2d029ea0802ee88580c9bebb3693230557e766c"},
+    {file = "stripe-8.0.0.tar.gz", hash = "sha256:16d9086c95801fb6931565ff8a3dd7ca3e85beb4cb6fdb2020e555f4254ff643"},
+]
+
+[package.dependencies]
+requests = {version = ">=2.20", markers = "python_version >= \"3.0\""}
+typing-extensions = {version = ">=4.5.0", markers = "python_version >= \"3.7\""}
+
+[[package]]
 name = "sympy"
 version = "1.14.0"
 description = "Computer algebra system (CAS) in Python"
@@ -2798,4 +2814,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "85ed319fc55634d8d9f6fbf80dbf591a457d38424d89a846092a01a0447aff49"
+content-hash = "047bd13800bd5ae2c0705388483da34ec0fa543f96a40f276947288642575438"
