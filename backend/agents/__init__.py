@@ -13,6 +13,3 @@ class BaseAgent:  # minimal base so subclasses compile
     def run(self, prompt: str, **kwargs):  # noqa: ANN001 \u2013 narrow later
         raise NotImplementedError
 
-
-from .quote_agent import QuoteAgent
-

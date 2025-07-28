@@ -28,7 +28,7 @@ async def generate_quote(request: dict[str, str]):  # noqa: ANN001 – minimal
 # -------- Quote retrieval --------------------------------------------------
 
 
-from backend.database import Quote, get_session  # placed here to avoid circular import earlier
+from backend.database import Quote, get_session  # noqa: E402 - placed here to avoid circular import earlier
 
 
 @router.get("/quote/{quote_id}", tags=["quote"])
@@ -48,15 +48,3 @@ async def fetch_quote(quote_id: str):
             "total": obj.total,
             "created_at": obj.created_at.isoformat(),
         }
-
-
-# -------- Memory search endpoint ------------------------------------------
-
-
-@router.post("/memory", tags=["memory"])
-async def memory_search(request: dict[str, str]):  # noqa: ANN001 – minimal
-    """Return top‑3 similar past quotes to the supplied `prompt`."""
-
-    prompt: str = request.get("prompt", "")
-    return MemoryAgent.run(prompt)
-
