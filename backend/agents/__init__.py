@@ -38,14 +38,18 @@ class QuoteAgent(BaseAgent):
             qty, suburb = 1, "Unknown"
 
         total = qty * 10.0
-        year = datetime.now(timezone.utc).year
+        year = datetime.utcnow().year
 
-        quote_line = f"> ${total:,.2f} for cleaning {qty} windows in {suburb}"
-        attribution = f"> 44 QuoteGPT, {year}"
-        rationale = (
-            "Rationale: placeholder $10/window rate while "
-            "pricing engine is pending."  # noqa: E501
+        # Query LLM for a short rationale so we exercise provider logic
+        from backend.core.llm_provider import chat as call_llm
+
+        llm_rationale = call_llm(
+            f"Give one-sentence explanation for a ${total:.2f} window-cleaning quote."
         )
+
+        quote_line = f"> \${total:,.2f} for cleaning {qty} windows in {suburb}"
+        attribution = f"> — QuoteGPT, {year}"
+        rationale = f"Rationale: {llm_rationale}"
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
 

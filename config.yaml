@@ -1,4 +1,10 @@
 # Initial configuration – will expand.
 
 llm:
-  provider: "openai"  # or "ollama"
+  provider: "openai"      # "openai" | "ollama"
+  openai:
+    model: "gpt-4o-mini"
+    temperature: 0.2
+  ollama:
+    host: "http://localhost:11434"
+    model: "mistral"
