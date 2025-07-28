@@ -24,7 +24,7 @@ class QuoteAgent(BaseAgent):
         """
 
         import re
-        from datetime import datetime
+        from datetime import datetime, timezone
 
         match = re.search(r"(\d+)\s+windows?\s+in\s+([A-Za-z]+)", prompt, flags=re.I)
         if match:
@@ -34,9 +34,9 @@ class QuoteAgent(BaseAgent):
             qty, suburb = 1, "Unknown"
 
         total = qty * 10.0
-        year = datetime.utcnow().year
+        year = datetime.now(timezone.utc).year
 
-        quote_line = f"> \${total:,.2f} for cleaning {qty} windows in {suburb}"
+        quote_line = f"> ${total:,.2f} for cleaning {qty} windows in {suburb}"
         attribution = f"> \u2014 QuoteGPT, {year}"
         rationale = (
             "Rationale: placeholder $10/window rate while pricing engine is pending."
@@ -44,11 +44,21 @@ class QuoteAgent(BaseAgent):
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
 
+        # -------- SpecGuard -------------------------------------------------
+
+        from backend.core.spec_guard import grade
+
+        spec_result = grade(full_quote)
+
         return {
             "quote_text": full_quote,
             "rationale": rationale,
             "suburb": suburb,
             "quantity": qty,
             "total": total,
+            "compliance": {
+                "score": spec_result.score,
+                "violations": spec_result.violations,
+            },
         }
 
