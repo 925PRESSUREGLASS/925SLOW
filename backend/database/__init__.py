@@ -1,11 +1,43 @@
-"""SQLite persistence layer (SQLAlchemy 2.0 ORM)."""
 
+
+"""SQLite persistence layer (SQLAlchemy 2.0 ORM)."""
 from __future__ import annotations
+from sqlalchemy import (
+    create_engine, String, Float, DateTime, ForeignKey
+)
+from sqlalchemy.orm import (
+    DeclarativeBase, mapped_column, Mapped, relationship, Session
+)
 
 import os
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
+
+# ---------------------------------------------------------------------------
+# Engine & Base
+# ---------------------------------------------------------------------------
+
+DATA_DIR = Path()
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+db_file = DATA_DIR / "app.db"
+engine = create_engine(f"sqlite:///{db_file}", echo=False, future=True)
+
+class Base(DeclarativeBase):
+    pass
+
+# ---------------------------------------------------------------------------
+# Customer model
+# ---------------------------------------------------------------------------
+
+class Customer(Base):
+    __tablename__ = "customers"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=lambda: str(uuid4()))
+    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
+    name: Mapped[str | None] = mapped_column(String, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 
 
