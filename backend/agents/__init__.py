@@ -1,6 +1,6 @@
 """Agent namespace \u2013 concrete agents will be added incrementally."""
 
-__all__ = ["BaseAgent", "QuoteAgent", "CustomerAgent", "JobAgent"]
+
 
 # NOTE: public re-export kept above in patch.
 
@@ -20,12 +20,17 @@ class QuoteAgent(BaseAgent):
     def run(self, prompt: str, **kwargs):
         """Produce a *format-compliant* placeholder quote.
 
-        Very naive parsing: look for "<number> windows in <Suburb>" and charge $10/ea.
+        Very naive parsing: look for "<number> windows in <Suburb>"
+        and charge $10/ea.
         """
         import re
         from datetime import datetime, timezone
 
-        match = re.search(r"(\d+)\s+windows?\s+in\s+([A-Za-z]+)", prompt, flags=re.I)
+        match = re.search(
+            r"(\d+)\s+windows?\s+in\s+([A-Za-z]+)",
+            prompt,
+            flags=re.I,
+        )
         if match:
             qty = int(match.group(1))
             suburb = match.group(2).title()
@@ -38,7 +43,8 @@ class QuoteAgent(BaseAgent):
         quote_line = f"> ${total:,.2f} for cleaning {qty} windows in {suburb}"
         attribution = f"> 44 QuoteGPT, {year}"
         rationale = (
-            "Rationale: placeholder $10/window rate while pricing engine is pending."
+            "Rationale: placeholder $10/window rate while "
+            "pricing engine is pending."  # noqa: E501
         )
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
@@ -61,8 +67,7 @@ class QuoteAgent(BaseAgent):
         }
 
         # -------- Persistence ----------------------------------------------
-        from backend.database import (  # local import to avoid heavy dep on start-up
-            Quote, get_session)
+
 
         with get_session() as sess:
             obj = Quote(
@@ -80,4 +85,3 @@ class QuoteAgent(BaseAgent):
 
 
 from .customer_agent import CustomerAgent  # noqa: E402
-from .job_agent import JobAgent  # noqa: E402

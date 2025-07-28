@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from backend.agents.customer_agent import CustomerAgent
-from backend.agents.job_agent import JobAgent
+
 from backend.agents.router_agent import RouterAgent
 from backend.database import (  # placed here to avoid circular import earlier
     Quote, get_session)
@@ -25,13 +25,6 @@ async def generate_quote(request: dict[str, str]):  # noqa: ANN001 – minimal
     return RouterAgent.dispatch(prompt)
 
 
-# -------- Customer helpers -------------------------------------------------
-
-
-@router.post("/customer", tags=["customer"])
-async def upsert_customer(body: dict):  # noqa: ANN001 – FastAPI will coerce JSON
-    return CustomerAgent.run(body)
-
 
 # -------- Quote retrieval --------------------------------------------------
 
@@ -54,27 +47,3 @@ async def fetch_quote(quote_id: str):
         }
 
 
-# -------- Job lifecycle ----------------------------------------------------
-
-
-@router.post("/job", tags=["job"])
-async def upsert_job(body: dict):  # noqa: ANN001
-    """Create a new job or update an existing one.
-
-    *Create* requires `quote_id` + `customer_id` **or** `customer_email`.
-    *Update* requires `job_id` plus any fields to change.
-    """
-
-    return JobAgent.run(body)
-
-
-@router.get("/job/{job_id}", tags=["job"])
-async def get_job(job_id: str):
-    with get_session() as sess:
-        from backend.database import \
-            Job  # local import to avoid top-level circular
-
-        job: Job | None = sess.get(Job, job_id)
-        if job is None:
-            return {"error": "job not found", "id": job_id}
-        return JobAgent._to_dict(job)

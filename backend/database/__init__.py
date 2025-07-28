@@ -7,17 +7,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
-from slugify import slugify
-from sqlalchemy import DateTime, Float, ForeignKey, String, create_engine
-from sqlalchemy.orm import (DeclarativeBase, Mapped, Session, mapped_column,
-                            relationship)
+
 
 # ---------------------------------------------------------------------------
 # Engine & Base
 # ---------------------------------------------------------------------------
 
 DATA_DIR = Path(
-    os.getenv("DATA_DIR", Path(__file__).resolve().parent.parent.parent / "data")
+
 )
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -30,24 +27,6 @@ class Base(DeclarativeBase):
 
 
 # ---------------------------------------------------------------------------
-# Models
-# ---------------------------------------------------------------------------
-
-
-class Customer(Base):
-    __tablename__ = "customers"
-
-    id: Mapped[str] = mapped_column(
-        String, primary_key=True, default=lambda: str(uuid4())
-    )
-    name: Mapped[str] = mapped_column(String, nullable=False)
-    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    phone: Mapped[str | None] = mapped_column(String, nullable=True)
-
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
-    )
-
 
 class Quote(Base):
     __tablename__ = "quotes"
@@ -66,39 +45,11 @@ class Quote(Base):
 
 
 # ---------------------------------------------------------------------------
-# Job model (new)
-# ---------------------------------------------------------------------------
 
-
-class Job(Base):
-    __tablename__ = "jobs"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid4())
     )
-
-    customer_id: Mapped[str] = mapped_column(
-        String, ForeignKey("customers.id"), nullable=False
-    )
-    quote_id: Mapped[str] = mapped_column(
-        String, ForeignKey("quotes.id"), nullable=False
-    )
-
-    status: Mapped[str] = mapped_column(
-        String, default="draft"
-    )  # draft|confirmed|completed
-    scheduled_date: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
-    notes: Mapped[str | None] = mapped_column(String, nullable=True)
-
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
-    )
-
-    # relationships (lazy = select by default)
-    customer = relationship("Customer")
-    quote = relationship("Quote")
 
 
 # ---------------------------------------------------------------------------
