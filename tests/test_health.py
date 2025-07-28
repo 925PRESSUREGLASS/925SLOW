@@ -1,6 +1,6 @@
-from backend import create_app
-
 from fastapi.testclient import TestClient
+
+from backend import create_app
 
 
 def test_health_endpoint():
@@ -8,4 +8,3 @@ def test_health_endpoint():
     resp = client.get("/health")
     assert resp.status_code == 200
     assert resp.json() == {"status": "ok"}
-

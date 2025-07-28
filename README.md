@@ -23,4 +23,3 @@ poetry run python -m backend.cli --prompt "Clean 12 windows in Palmyra"
 ```
 
 Next PRs will flesh out agents, vector memory, SpecGuard, integrations, and the React frontend following the project blueprint.
-
