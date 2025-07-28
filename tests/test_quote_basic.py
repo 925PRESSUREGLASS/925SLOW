@@ -11,3 +11,5 @@ def test_quote_endpoint_blockquote():
     assert body["quote_text"].startswith(">")  # Spec minimal
     assert "Perth" in body["quote_text"]
     assert "$20.00" in body["quote_text"]
+    # SpecGuard embedded
+    assert body["compliance"]["score"] >= 0.8
