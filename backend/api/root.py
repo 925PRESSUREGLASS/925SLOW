@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 
-
 router = APIRouter()
 
 
@@ -9,4 +8,3 @@ async def healthcheck() -> dict[str, str]:
     """Simple liveness probe used by CI and Docker compose."""
 
     return {"status": "ok"}
-
