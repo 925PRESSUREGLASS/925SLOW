@@ -1,0 +1,3 @@
+prompt,context,expected_output
+"Hi, I'm Lucy Lazzarini. Can I please get a quote for my unit in Palmyra? I’m interested in Single Storey Window Clean","{'job_type': 'Window Clean', 'location': 'Palmyra', 'building_type': 'unit'}","{'items': [{'label': 'Single Storey Window Clean', 'price': 120}], 'total': 120}"
+"Hi, I'm Marion Gunn. Can I please get a quote for my two-storey house in Bicton? I’m interested in Single Storey Window Clean","{'job_type': 'Window Clean', 'location': 'Bicton', 'building_type': 'two-storey house'}","{'items': [{'label': 'Single Storey Window Clean', 'price': 120}], 'total': 120}"

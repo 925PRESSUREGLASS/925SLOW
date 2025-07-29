@@ -14,6 +14,8 @@ class BaseAgent:  # minimal base so subclasses compile
         raise NotImplementedError
 
 
+from backend.database import Quote, get_session
+
 class QuoteAgent(BaseAgent):
     name = "quote"
 
@@ -43,6 +45,7 @@ class QuoteAgent(BaseAgent):
 
         attribution = f"> — QuoteGPT, {year}"
         rationale = "Rationale: This is a placeholder rationale for the quote."
+        quote_line = f"{qty} windows in {suburb}: ${total:.2f}"
 
         full_quote = "\n".join([quote_line, attribution, "", rationale])
 
@@ -61,7 +64,7 @@ class QuoteAgent(BaseAgent):
                 "score": spec_result.score,
                 "violations": spec_result.violations,
             },
-            "vector_used": bool(relevant_snippets),
+            "vector_used": False,  # No relevant_snippets defined, so set to False
         }
 
         # -------- Persistence ----------------------------------------------

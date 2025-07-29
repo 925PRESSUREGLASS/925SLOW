@@ -1,0 +1,13 @@
+prompt,response,grading
+Quote for pressure washing and gutter clean,"> **Pressure Washing:** $150  
+> **Gutter Clean:** $90  
+> — *925 Quote System*, Assistant (2025)","{'wraps_in_blockquote': True, 'includes_em_dash': True, 'attribution_line': True}"
+Quote for 2 storey house and solar panels,"**2 Storey House Clean – $330**  
+**Solar Panels – $150**","{'wraps_in_blockquote': False, 'includes_em_dash': False, 'attribution_line': False}"
+Window cleaning double storey,"> Window Clean – Double Storey: $180  
+> — *925 System*","{'wraps_in_blockquote': True, 'includes_em_dash': True, 'attribution_line': True}"
+Full service quote required,"> Quote total: $720
+- Window Clean: $180
+- Gutter Clean: $90
+- Exterior Wash: $330
+- Solar Panels: $120","{'wraps_in_blockquote': True, 'includes_em_dash': False, 'attribution_line': False}"

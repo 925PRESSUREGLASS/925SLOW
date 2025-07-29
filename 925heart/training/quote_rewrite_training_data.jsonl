@@ -1,0 +1,5 @@
+{"legacy_input": "QUOTE: 2 story wash plus windows $350", "expected_rewrite": "Full 2-storey house wash and window clean \u2014 $350.00"}
+{"legacy_input": "clean: windows+gutters 210$", "expected_rewrite": "Window and gutter cleaning \u2014 $210.00"}
+{"legacy_input": "200 total (gutter clean + driveway)", "expected_rewrite": "Gutter cleaning and driveway pressure wash \u2014 $200.00"}
+{"legacy_input": "Full job incl solar panel: 450", "expected_rewrite": "Complete service including solar panel cleaning \u2014 $450.00"}
+{"legacy_input": "Ext wash + roof quote ~600", "expected_rewrite": "Exterior house wash and roof clean \u2014 approximately $600.00"}

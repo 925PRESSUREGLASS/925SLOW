@@ -1,0 +1,37 @@
+instruction,code_diff
+Add FAISS memory loading to quote_agent.py,"diff --git a/agents/quote_agent.py b/agents/quote_agent.py
+index 89ab23..cde345 100644
+--- a/agents/quote_agent.py
++++ b/agents/quote_agent.py
+@@ import statements @@
++from memory.faiss_wrapper import load_vectorstore
+
+@@ def run_quote_agent(): @@
++    memory = load_vectorstore()
+     agent = QuoteAgent(memory=memory)
+     return agent.run()"
+Refactor hardcoded prices into a pricing config dictionary,"diff --git a/utils/price_calc.py b/utils/price_calc.py
+index a12bc3..d43e65 100644
+--- a/utils/price_calc.py
++++ b/utils/price_calc.py
+@@ def calculate_price(job_type): @@
+-    if job_type == 'window_single': return 120
+-    elif job_type == 'window_double': return 180
++    PRICES = {'window_single': 120, 'window_double': 180}
++    return PRICES.get(job_type, 0)"
+Integrate Docker healthcheck in Dockerfile,"diff --git a/Dockerfile b/Dockerfile
+index 332aaf..ddbe34 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ final lines @@
++HEALTHCHECK CMD curl --fail http://localhost:8000/health || exit 1"
+Replace print statements with logging in job_agent.py,"diff --git a/agents/job_agent.py b/agents/job_agent.py
+index 93cbff..02dca1 100644
+--- a/agents/job_agent.py
++++ b/agents/job_agent.py
+@@ import statements @@
++import logging
+
+@@ print(""Starting job..."") @@
+-print(""Starting job..."")
++logging.info(""Starting job..."")"

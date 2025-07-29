@@ -45,17 +45,7 @@ class Customer(Base):
 # Engine & Base
 # ---------------------------------------------------------------------------
 
-DATA_DIR = Path(
-
-)
-DATA_DIR.mkdir(parents=True, exist_ok=True)
-
-db_file = DATA_DIR / "app.db"
-engine = create_engine(f"sqlite:///{db_file}", echo=False, future=True)
-
-
-class Base(DeclarativeBase):
-    pass
+# (Removed duplicate engine and Base class setup)
 
 
 # ---------------------------------------------------------------------------
