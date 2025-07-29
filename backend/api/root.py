@@ -1,15 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, FastAPI
 
 from backend.agents.customer_agent import CustomerAgent
-
 from backend.agents.router_agent import RouterAgent
 from backend.database import (  # placed here to avoid circular import earlier
     Quote, get_session)
 
 router = APIRouter()
+app = FastAPI()
 
 
-@router.get("/health", tags=["meta"])
+@app.get("/health", tags=["meta"])
 async def healthcheck() -> dict[str, str]:
     """Simple liveness probe used by CI and Docker compose."""
     return {"status": "ok"}
@@ -23,7 +23,6 @@ async def generate_quote(request: dict[str, str]):  # noqa: ANN001 – minimal
     """Accept `{ "prompt": "…" }` and return QuoteAgent JSON output."""
     prompt: str = request.get("prompt", "")
     return RouterAgent.dispatch(prompt)
-
 
 
 # -------- Quote retrieval --------------------------------------------------
@@ -42,7 +41,7 @@ async def fetch_quote(quote_id: str):
         "rationale": "sample rationale",
         "suburb": "Melville",
         "total": 90.0,
-        "created_at": "2025-07-29T00:00:00"
+        "created_at": "2025-07-29T00:00:00",
     }
 
-
+app.include_router(router)

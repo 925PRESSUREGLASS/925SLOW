@@ -23,6 +23,7 @@ _cfg = load_config().get("llm", {})
 # OpenAI driver
 # ---------------------------------------------------------------------------
 
+
 def _openai_chat(prompt: str) -> str:  # noqa: D401,ANN001
     key = os.getenv("OPENAI_API_KEY")
     if not key:
@@ -46,6 +47,7 @@ def _openai_chat(prompt: str) -> str:  # noqa: D401,ANN001
 # Ollama driver (local inference)
 # ---------------------------------------------------------------------------
 
+
 def _ollama_chat(prompt: str) -> str:  # noqa: D401,ANN001
     host = _cfg.get("ollama", {}).get("host", "http://localhost:11434")
     model = _cfg.get("ollama", {}).get("model", "mistral")
@@ -61,6 +63,7 @@ def _ollama_chat(prompt: str) -> str:  # noqa: D401,ANN001
 # ---------------------------------------------------------------------------
 # Public helper – tries each driver in order
 # ---------------------------------------------------------------------------
+
 
 def chat(prompt: str) -> str:  # noqa: D401,ANN001 – primary entry point
     provider = _cfg.get("provider", "openai").lower()
@@ -83,4 +86,3 @@ def chat(prompt: str) -> str:  # noqa: D401,ANN001 – primary entry point
             continue
 
     raise RuntimeError(f"All LLM providers failed: {last_err}")
-

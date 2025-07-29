@@ -1,9 +1,12 @@
-
 from __future__ import annotations
+
 from typing import Any
-from .base_agent import BaseAgent
+
 from backend.database import Customer, Job, Quote, get_session
 from backend.integrations.stripe_service import create_invoice
+
+from .base_agent import BaseAgent
+
 
 class JobAgent:
     """Create or update Job entries linking customers and quotes."""
@@ -16,7 +19,9 @@ class JobAgent:
         if isinstance(payload, str):
             # Parse string like "quote_id: ..., customer_id: ..., ..."
             parts = [p.strip() for p in payload.split(",") if ":" in p]
-            payload = {k.strip(): v.strip() for k, v in (part.split(":", 1) for part in parts)}
+            payload = {
+                k.strip(): v.strip() for k, v in (part.split(":", 1) for part in parts)
+            }
         with get_session() as sess:
             job_id = payload.get("job_id")
             if job_id:

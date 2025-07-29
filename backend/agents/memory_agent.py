@@ -7,7 +7,7 @@ from typing import Any
 
 from backend.database import Quote, get_session
 
-from . import BaseAgent
+from .base_agent import BaseAgent
 
 
 class MemoryAgent(BaseAgent):

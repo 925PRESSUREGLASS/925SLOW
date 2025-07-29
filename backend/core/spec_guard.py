@@ -5,7 +5,6 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
-
 _ATTR_RE = re.compile(r"^>\s+—\s+QuoteGPT,\s+\d{4}")
 _CURRENCY_RE = re.compile(r"\$\d{1,3}(?:,?\d{3})*(?:\.\d{2})?")
 

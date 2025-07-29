@@ -19,8 +19,7 @@ SQLAlchemy = "^2.0.30"
 python-slugify = "^8.0.4"  # tiny helper for DB path default
 python-dateutil = "^2.9.0.post0"
 openai = "1.97.1"
-sentence-transformers = "2.7.0"
-
+sentence-transformers = { version = "2.7.0", extras = ["cpu"] }
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
 black = "^24.4.2"

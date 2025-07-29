@@ -24,9 +24,7 @@ def test_invoice_stub(monkeypatch):
     cust = CustomerAgent.run("name: Paying Pal, email: pay@example.com")
     quote = QuoteAgent().run("Clean 1 windows in Paidville")
 
-    job = JobAgent.run(
-        f'quote_id: {quote["quote_id"]}, customer_id: {cust["id"]}'
-    )
+    job = JobAgent.run(f'quote_id: {quote["quote_id"]}, customer_id: {cust["id"]}')
 
     assert job["invoice_id"] is None  # draft no invoice yet
 

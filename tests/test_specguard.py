@@ -2,7 +2,9 @@ from backend.core.spec_guard import grade
 
 
 def test_specguard_perfect():
-    msg = "> $100.00 to clean 10 windows in Perth\n> — QuoteGPT, 2025\nRationale: sample."
+    msg = (
+        "> $100.00 to clean 10 windows in Perth\n> — QuoteGPT, 2025\nRationale: sample."
+    )
     res = grade(msg)
     assert res.score == 1.0
     assert not res.violations
