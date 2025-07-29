@@ -1,38 +1,52 @@
-from backend.agents import BaseAgent
 
-class JobAgent(BaseAgent):
+from __future__ import annotations
+from typing import Any
+from .base_agent import BaseAgent
+from backend.database import Customer, Job, Quote, get_session
+from backend.integrations.stripe_service import create_invoice
+
+class JobAgent:
+    """Create or update Job entries linking customers and quotes."""
+
     name = "job"
 
-    @classmethod
-    def run(cls, prompt: str, **kwargs):
-        import re
-        status = "draft"
-        scheduled_date = None
+    @staticmethod
+    def run(payload: Any) -> dict[str, Any]:  # noqa: D401,ANN001
         # Accept dict or string
-        if isinstance(prompt, dict):
-            status = prompt.get("status", "draft")
-            scheduled_date = prompt.get("scheduled_date")
-        else:
-            prompt_str = str(prompt)
-            status_match = re.search(r"status:\s*([^,]+)", prompt_str)
-            scheduled_match = re.search(r"scheduled_date:\s*([^,]+)", prompt_str)
-            if status_match:
-                status = status_match.group(1).strip()
-            if scheduled_match:
-                scheduled_date = scheduled_match.group(1).strip()
-        if status == "completed":
-            from uuid import uuid4
+        if isinstance(payload, str):
+            # Parse string like "quote_id: ..., customer_id: ..., ..."
+            parts = [p.strip() for p in payload.split(",") if ":" in p]
+            payload = {k.strip(): v.strip() for k, v in (part.split(":", 1) for part in parts)}
+        with get_session() as sess:
+            job_id = payload.get("job_id")
+            if job_id:
+                job: Job | None = sess.get(Job, job_id)
+                if job is None:
+                    return {"error": "job not found", "id": job_id}
+                if payload.get("status"):
+                    job.status = payload["status"]
+                    if job.status == "completed" and job.invoice_id is None:
+                        cust = sess.get(Customer, job.customer_id)
+                        amount_cents = int(job.quote.total * 100)
+                        if cust is not None:
+                            job.invoice_id = create_invoice(cust.email, amount_cents)
+                        else:
+                            job.invoice_id = None
+                if payload.get("scheduled_date"):
+                    job.scheduled_date = payload["scheduled_date"]
+            else:
+                job = Job(
+                    quote_id=payload["quote_id"],
+                    customer_id=payload["customer_id"],
+                    scheduled_date=payload.get("scheduled_date"),
+                )
+                sess.add(job)
+            sess.commit()
             return {
-                "id": "test-id",
-                "name": str(prompt),
-                "invoice_id": f"stub-{uuid4().hex[:8]}",
-                "status": status,
-                "scheduled_date": scheduled_date
+                "id": job.id,
+                "quote_id": job.quote_id,
+                "customer_id": job.customer_id,
+                "status": job.status,
+                "scheduled_date": job.scheduled_date if job.scheduled_date else None,
+                "invoice_id": job.invoice_id,
             }
-        return {
-            "id": "test-id",
-            "name": str(prompt),
-            "invoice_id": None,
-            "status": status,
-            "scheduled_date": scheduled_date
-        }
