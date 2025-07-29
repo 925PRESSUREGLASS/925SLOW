@@ -6,7 +6,6 @@ import os
 from pathlib import Path
 from uuid import uuid4
 
-from slugify import slugify
 from sqlalchemy import DateTime, Float, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from datetime import datetime, timezone
@@ -15,7 +14,12 @@ from datetime import datetime, timezone
 # Engine & Base
 # ---------------------------------------------------------------------------
 
-DATA_DIR = Path(os.getenv("DATA_DIR", Path(__file__).resolve().parent.parent.parent / "data"))
+DATA_DIR = Path(
+    os.getenv(
+        "DATA_DIR",
+        Path(__file__).resolve().parent.parent.parent / "data",
+    )
+)
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 db_file = DATA_DIR / "app.db"
